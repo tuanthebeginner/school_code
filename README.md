@@ -1,162 +1,109 @@
 # csd203code
-class Book:
-    def __init__(self, code, names, author, price):
-        self.code = code
-        self.names = names
-        self.author = author
-        self.price = price
+class Pet:
+    # Pet: id, nickName, age, weight. 
+    # your code here.
+    def __init__(self, id, nickName, age, weight):
+        self.id = id
+        self.nickName = nickName
+        self.age = age
+        self.weight = weight
+    def print(self):
+        print(self.id, self.nickName, self.age, self.weight)
 
-    def info(self):
-        print(f'ma so: {self.code}, ten: {self.names}, tac gia: {self.author}, gia: {self.price}')
-
-class BookNode:
-    def __init__(self, data, next, prev):
+class Node:
+    # your code here:
+    def __init__(self,data):
         self.data = data
-        self.next = next
-        self.prev = prev
+        self.next = None
+        self.prev = None
 
-    def display(self):
-        self.data.info()
-
-class BookDLL:
+class DoubleLinkedList:
     def __init__(self):
         self.head = None
-        self.tail = None
-
-    def is_empty(self):
+    # function: add new PUPPY into List
+    def add(self, newPuppy):
+        # your code here
         if self.head == None:
-            return True
-        return False
-
-    def removeHead(self):
-        if self.is_empty():
-            print('Book DLL is empty')
-            return
-        if self.head.next == None:
-            self.head = None
-            self.tail = None
-            return
-
-        self.head = self.head.next
-        self.head.prev = None
-
-        if self.is_empty():
-            self.tail = None
-
-    def addTail(self, newdata):
-        new_item = BookNode(newdata, None, None)
-
-        if self.is_empty():
-            self.head = new_item
+            self.head = newPuppy
         else:
-            self.tail.next = new_item
-            self.tail.next.prev = self.tail
-
-        self.tail = new_item
-
-    def addHead(self, newdata):
-        new_item = BookNode(newdata, None, None)
-        if self.is_empty():
-            self.tail = new_item
+            tmp = self.head
+            while tmp.next is not None:
+                tmp = tmp.next
+            tmp.next = newPuppy
+            newPuppy.prev = tmp
+    # function: search PUPPY based name
+    def search(self, searchName):
+        # your code here:
+        tmp = self.head
+        while tmp is not None:
+            if searchName in tmp.data.nickName:
+                tmp.data.print()
+            tmp = tmp.next
+    # function: remove puppy based id
+    def remove(self, id):
+        # your code here
+        if self.head.data.id == id:
+            self.head = self.head.next
         else:
-            self.head.prev = new_item
-            new_item.next = self.head
-
-        self.head = new_item
-
-    def removeTail(self):
-        if self.is_empty():
-            print('Book DLL is empty')
-            return
-        if self.head.next == None:
-            self.head = None
-            self.tail = None
-            return
-
-        self.tail = self.tail.prev
-        self.tail.next = None
-
-        if self.is_empty():
-            self.head = None
-
-    def traversal(self):
-        if self.is_empty():
-            print("Book DLL is empty")
-            return
-        current = self.head
-        while current != None:
-            current.display()
-            current = current.next
-
-    def isDuplicated(self, _id):
-        if self.is_empty():
-            return False
-        current = self.head
-        while current != None:
-            if (current.data.id == _id):
+            prev = None
+            tmp = self.head
+            while tmp is not None:
+                if tmp.data.id == id:
+                    if tmp.next is None:
+                        prev.next = None
+                        tmp.next = None
+                    else:
+                        prev.next = tmp.next
+                        tmp.next.prev = prev
+                prev = tmp
+                tmp = tmp.next
+    # function: display puppy list
+    def display(self):
+        # your code here
+        tmp = self.head
+        while tmp is not None:
+            tmp.data.print()
+            tmp = tmp.next
+    def check_exist(self,id):
+        tmp = self.head
+        while tmp is not None:
+            if tmp.data.id == id:
                 return True
-            current = current.next
+            tmp = tmp.next
         return False
-
-    def update(self, newData):
-        if self.is_empty():
-            print("Book DLL is empty")
-            return
-        current = self.head
-        while current != None:
-            if (current.data.id == newData.id):
-                current.data.names = newData.names
-                current.data.address = newData.address
-                current.data.score = newData.score
-                return
-            current = current.next
-
-
-menu_options = {
-    1: 'Thêm sinh viên (CREATE)',
-    2: 'Hiển thị danh sách (READ)',
-    3: 'Hiển thị thông tin sinh viên (READ)',
-    4: 'Cập nhật sinh viên (UPDATE)',
-    5: 'Xóa sinh viên khi biết mã số (DELETE)',
-    6: 'Remove head',
-    7: 'Remove tail',
-    'Others': 'Thoát chương trình CRUD'
-}
-
 
 def print_menu():
-    for key in menu_options.keys():
-        print(key, '--', menu_options[key])
+    print("1. Add puppy.")
+    print("2. Search puppy by name.")
+    print("3. Display all puppy.")
+    print("4. Remove puppy by ID.")
+    print("5. Exist the menu.")
 
-
-stuList = BookDLL()
-
-while (True):
+print_menu()
+l = DoubleLinkedList()
+user_choice = int(input("Enter your choice:"))
+while user_choice in [1,2,3,4]:
+    if user_choice == 1:
+        id = input("Enter puppy id:")
+        if l.check_exist(id) == True:
+            print("Puppy existed.")
+        else:
+            name = input("Enter puppy nickname:")
+            age = int(input("Enter puppy age:"))
+            weight = float(input("Enter puppy weight:"))
+            pet = Pet(id, name, age, weight)
+            data = Node(pet)
+            l.add(data)
+    elif user_choice ==2:
+        name = input("Enter words in name of puppy:")
+        l.search(name)
+    elif user_choice == 3:
+        l.display()
+    elif user_choice == 4:
+        id = input("Enter puppy id to delete:")
+        if l.check_exist(id) == False:
+            print("Pet not exist.")
+        else:
+            l.remove(id)
     print_menu()
-    userChoice = ''
-    try:
-        userChoice = int(input('Nhap tuy chon: '))
-    except:
-        print('Nhap sai, moi nhap lai....')
-        continue
-
-    if userChoice == 1:
-        maso = input("Nhap ma so: ")
-        ten = input("Nhap ten: ")
-        tacgia = input("Nhap tac gia: ")
-        gia = float(input("Nhap gia ca: "))
-        sach = Book(maso, ten, tacgia, gia)
-        if (stuList.isDuplicated(maso) == False):
-            stuList.addTail(sach)
-    elif userChoice == 5:
-        stuList.traversal()
-    elif userChoice == 3:
-        maso = input("Nhap ma so sach can cap nhat: ")
-        ten = input("Cap nhat ten: ")
-        tacgia = input("Cap nhat tac gia: ")
-        gia = float(input("Cap nhat gia: "))
-        sach = Book(maso, ten, tacgia, gia)
-        stuList.update(sach)
-    else:
-        print('bye')
-        break
+    user_choice = int(input("Enter your choice:"))
