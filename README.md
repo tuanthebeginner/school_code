@@ -1,5 +1,6 @@
 # csd203code
 class Pet:
+
     # Pet: id, nickName, age, weight. 
     # your code here.
     def __init__(self, id, nickName, age, weight):
@@ -9,17 +10,20 @@ class Pet:
         self.weight = weight
     def print(self):
         print(self.id, self.nickName, self.age, self.weight)
-
+        
 class Node:
-    # your code here:
+
     def __init__(self,data):
         self.data = data
         self.next = None
         self.prev = None
 
+
 class DoubleLinkedList:
+
     def __init__(self):
         self.head = None
+        
     # function: add new PUPPY into List
     def add(self, newPuppy):
         # your code here
@@ -31,6 +35,7 @@ class DoubleLinkedList:
                 tmp = tmp.next
             tmp.next = newPuppy
             newPuppy.prev = tmp
+            
     # function: search PUPPY based name
     def search(self, searchName):
         # your code here:
@@ -39,6 +44,7 @@ class DoubleLinkedList:
             if searchName in tmp.data.nickName:
                 tmp.data.print()
             tmp = tmp.next
+            
     # function: remove puppy based id
     def remove(self, id):
         # your code here
@@ -57,6 +63,8 @@ class DoubleLinkedList:
                         tmp.next.prev = prev
                 prev = tmp
                 tmp = tmp.next
+                
+                
     # function: display puppy list
     def display(self):
         # your code here
@@ -72,17 +80,25 @@ class DoubleLinkedList:
             tmp = tmp.next
         return False
 
+
+
 def print_menu():
+
     print("1. Add puppy.")
     print("2. Search puppy by name.")
     print("3. Display all puppy.")
     print("4. Remove puppy by ID.")
     print("5. Exist the menu.")
 
+
+
 print_menu()
+
 l = DoubleLinkedList()
+
 user_choice = int(input("Enter your choice:"))
 while user_choice in [1,2,3,4]:
+
     if user_choice == 1:
         id = input("Enter puppy id:")
         if l.check_exist(id) == True:
